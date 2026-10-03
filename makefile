@@ -15,6 +15,7 @@ DEP_LPKS = \
     libs/helpers/helpers.lpk \
     libs/toolkit/toolkit.lpk \
     libs/richmemo/richmemopackage.lpk \
+    libs/richmemo/ide/richmemo_design.lpk \
     libs/richkit/richkit.lpk \
     libs/designkit/designkit.lpk
 
@@ -43,6 +44,6 @@ deps:
 # Remove compiled units and the final binary
 clean:
 	find . -type f \( -name "*.o" -o -name "*.ppu" -o -name "*.compiled" \) -delete
-	rm -f pobatch
+	rm -f spellcheck
 
 .PHONY: all submodules deps clean

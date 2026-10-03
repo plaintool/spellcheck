@@ -109,15 +109,13 @@ spellcheck/
 ├─ dependencies32.cmd      # Builds dependencies for 32-bit target
 ├─ dependency.cmd          # Universal single-dependency builder
 ├─ depsbinary.cmd          # Copies and signs binary files
-├─ depssub.cmd             # Helper script for submodule operations
-├─ fast.cmd                # Fast build option
-├─ installer/              # Installer files, certificates, etc.
+├─ depssub.cmd             # Pulls latest dependency submodule sources for x64 without building them
+├─ fast.cmd                # Quick project build: skips dependencies, signing, and binary processing
 ├─ lib/                    # Compiled modules/libraries
 ├─ libs/                   # Git submodules (Helpers, Toolkit, RichMemo, RichKit, DesignKit)
 ├─ LICENSE                 # License file
 ├─ makefile                # Alternative make-based build
 ├─ samples/                # Additional samples
-├─ spellcheck.exe          # Built executable
 ├─ spellcheck.ico          # Application icon
 ├─ spellcheck.lpi          # Lazarus project file
 ├─ spellcheck.lpr          # Main project source

@@ -27,7 +27,9 @@ object Form1: TForm1
   object SpellChecker1: TSpellChecker
     RichMemo = RichMemo1
     Language = 'en'
+    RealTime = True
     SubMenuCaption = 'Suggestions'
+    Engine = seHunspell
     DicUrl = 'https://raw.githubusercontent.com/LibreOffice/dictionaries/master/{libredict}'
     Left = 392
     Top = 240
