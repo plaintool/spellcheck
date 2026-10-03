@@ -1,0 +1,20 @@
+[submodule "libs/helpers"]
+	path = libs/helpers
+	url = https://github.com/plainlib/helpers.git
+	branch = main
+[submodule "libs/toolkit"]
+	path = libs/toolkit
+	url = https://github.com/plainlib/toolkit.git
+	branch = main
+[submodule "libs/richmemo"]
+	path = libs/richmemo
+	url = https://github.com/plainlib/richmemo.git
+	branch = master
+[submodule "libs/richkit"]
+	path = libs/richkit
+	url = https://github.com/plainlib/richkit.git
+	branch = main
+[submodule "libs/designkit"]
+	path = libs/designkit
+	url = https://github.com/plainlib/designkit.git
+	branch = main

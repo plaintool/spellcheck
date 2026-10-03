@@ -1,17 +1,17 @@
 object Form1: TForm1
   Left = 305
-  Height = 322
+  Height = 314
   Top = 250
-  Width = 480
+  Width = 477
   Caption = 'Form1'
-  ClientHeight = 322
-  ClientWidth = 480
+  ClientHeight = 314
+  ClientWidth = 477
   LCLVersion = '4.8.0.0'
   object RichMemo1: TRichMemo
     Left = 0
-    Height = 322
+    Height = 314
     Top = 0
-    Width = 480
+    Width = 477
     Align = alClient
     HideSelection = False
     Lines.Strings = (
@@ -29,7 +29,7 @@ object Form1: TForm1
     Language = 'en'
     SubMenuCaption = 'Suggestions'
     DicUrl = 'https://raw.githubusercontent.com/LibreOffice/dictionaries/master/{libredict}'
-    Left = 376
+    Left = 392
     Top = 240
   end
 end

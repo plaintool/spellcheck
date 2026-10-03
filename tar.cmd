@@ -1,0 +1,1 @@
+C:\Windows\System32\tar -cvf spellcheck.tar --exclude=spellcheck.tar --exclude=samples --exclude=installer --exclude=lib --exclude=.git --exclude=*.exe *
