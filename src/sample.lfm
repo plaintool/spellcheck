@@ -30,7 +30,8 @@ object Form1: TForm1
     RealTime = True
     SubMenuCaption = 'Suggestions'
     Engine = seHunspell
-    DicUrl = 'https://raw.githubusercontent.com/LibreOffice/dictionaries/master/{libredict}'
+    DicPath = '{temp}\dic'
+    DicUrl = 'https://raw.githubusercontent.com/plainlib/dictionaries/main/{plaindict}'
     Left = 392
     Top = 240
   end
