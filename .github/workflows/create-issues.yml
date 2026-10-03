@@ -1,0 +1,151 @@
+name: Create Issue from Commit
+run-name: "${{ github.event_name == 'push' && github.event.head_commit.message || format('Issue: {0}', github.event.inputs.commit_sha) }}"
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: 'Commit SHA to process (for reprocessing missed commits)'
+        required: true
+        type: string
+jobs:
+  create_issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Process commits from push or manual dispatch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Determine the source of commits: push event or manual dispatch
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            COMMIT_SHA="${{ github.event.inputs.commit_sha }}"
+            echo "Manual dispatch for commit: $COMMIT_SHA"
+            # Retrieve commit details from the repository
+            COMMIT_MSG=$(git log -1 --format=%s "$COMMIT_SHA")
+            COMMIT_AUTHOR=$(git log -1 --format=%an "$COMMIT_SHA")
+            # Build a JSON array mimicking the push event format
+            COMMITS_JSON=$(jq -n \
+              --arg id "$COMMIT_SHA" \
+              --arg msg "$COMMIT_MSG" \
+              --arg author "$COMMIT_AUTHOR" \
+              '[{id: $id, message: $msg, author: {name: $author}}]')
+          else
+            # Normal push event: use the commits array from the event payload
+            COMMITS_JSON='${{ toJSON(github.event.commits) }}'
+          fi
+
+          # Exit early if there are no commits to process
+          if [ -z "$COMMITS_JSON" ] || [ "$COMMITS_JSON" = "[]" ]; then
+            echo "No commits to process. Exiting."
+            exit 0
+          fi
+
+          echo "Commits to process:"
+          echo "$COMMITS_JSON" | jq -r '.[] | "\(.id) by \(.author.name): \(.message)"'
+
+          # Iterate over each commit object and extract the necessary fields
+          echo "$COMMITS_JSON" | jq -c '.[] | {id: .id, message: .message, author: .author.name}' | while read -r commit; do
+            COMMIT_ID=$(echo "$commit" | jq -r '.id')
+            COMMIT_MSG=$(echo "$commit" | jq -r '.message')
+            COMMIT_AUTHOR=$(echo "$commit" | jq -r '.author')
+
+            echo "Processing commit: $COMMIT_ID by $COMMIT_AUTHOR"
+
+            # Convert commit message to uppercase for case‑insensitive matching
+            upper_msg=$(echo "$COMMIT_MSG" | tr '[:lower:]' '[:upper:]')
+            case "$upper_msg" in
+                *"FIX:"*|*"FIXED:"*)
+                    type="Bug"
+                    ;;
+                *"FEATURE:"*|*"FEAT:"*)
+                    type="Feature"
+                    ;;
+                *"ENHANCEMENT:"*|*"ENHANCE:"*|*"ENHACE:"*)
+                    type="Enhancement"
+                    ;;
+                *"DOC:"*|*"DOCUMENTATION:"*)
+                    type="Documentation"
+                    ;;
+                *"LOCALIZATION:"*|*"LOCAL:"*|*"LOC:"*)
+                    type="Localization"
+                    ;;
+                *)
+                    type="None"
+                    ;;
+            esac
+
+            if [ "$type" != "None" ]; then
+              echo "Creating $type issue for commit: $COMMIT_ID"
+
+              # Remove the commit type prefix to create a cleaner issue title
+              TITLE=$(echo "$COMMIT_MSG" | sed -E 's/^(FIX|FIXED|FEATURE|FEAT|ENHANCEMENT|ENHANCE|ENHACE|DOC|DOCUMENTATION|LOCALIZATION|LOCAL|LOC):\s*//i')
+
+              # Check for duplicate issue with the same title among issues labeled "Auto"
+              EXISTING_TITLES=$(GH_TOKEN="$GITHUB_TOKEN" gh issue list --repo "$GITHUB_REPOSITORY" --state all --label Auto --json title --jq '.[].title')
+
+              if echo "$EXISTING_TITLES" | grep -Fxq "$TITLE"; then
+                echo "Duplicate issue with title '$TITLE' already exists. Skipping creation."
+                continue
+              fi
+
+              # Additional check for duplicate issue containing this commit SHA in body
+              SEARCH_QUERY="repo:${GITHUB_REPOSITORY}+is:issue+${COMMIT_ID}+in:body"
+              SEARCH_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/search/issues?q=${SEARCH_QUERY}")
+              TOTAL_COUNT=$(echo "$SEARCH_RESPONSE" | jq -r '.total_count')
+
+              if [ "$TOTAL_COUNT" -gt 0 ]; then
+                EXISTING_NUMBER=$(echo "$SEARCH_RESPONSE" | jq -r '.items[0].number')
+                echo "Issue for commit $COMMIT_ID already exists as #$EXISTING_NUMBER. Skipping creation."
+                continue
+              fi
+
+              BODY_TEXT="**Commit:** https://github.com/$GITHUB_REPOSITORY/commit/$COMMIT_ID\n**Author:** $COMMIT_AUTHOR\n\nThis issue was automatically created from commit $COMMIT_ID"
+
+              # Build a valid JSON payload using jq to safely escape special characters
+              JSON=$(jq -n \
+                --arg title "$TITLE" \
+                --arg body "$BODY_TEXT" \
+                --arg type "$type" \
+                '{title: $title, body: $body, labels: [$type, "Auto"]}')
+
+              # Create the GitHub issue via API
+              RESPONSE=$(curl -s -X POST \
+                -H "Authorization: token $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                -H "Content-Type: application/json" \
+                https://api.github.com/repos/${GITHUB_REPOSITORY}/issues \
+                -d "$JSON")
+
+              ISSUE_NUMBER=$(echo "$RESPONSE" | jq -r '.number')
+
+              # If the issue was created successfully, close it after a short delay
+              if [ -n "$ISSUE_NUMBER" ] && [ "$ISSUE_NUMBER" != "null" ]; then
+                echo "Waiting 5 seconds before closing issue..."
+                sleep 5
+
+                # Close the issue
+                curl -s -X PATCH \
+                  -H "Authorization: token $GITHUB_TOKEN" \
+                  -H "Accept: application/vnd.github+json" \
+                  -H "Content-Type: application/json" \
+                  https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/$ISSUE_NUMBER \
+                  -d '{"state":"closed"}'
+
+                echo "Created and closed issue #$ISSUE_NUMBER for commit $COMMIT_ID"
+              else
+                echo "Failed to create issue for commit $COMMIT_ID. Response: $RESPONSE"
+              fi
+            else
+              echo "Skipping commit $COMMIT_ID – no matching type prefix"
+            fi
+          done
