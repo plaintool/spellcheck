@@ -42,6 +42,7 @@ Main properties:
 | `DicUrl` | URL template for automatic dictionary download. |
 | `ChunkedCheck` | When `True`, large texts are checked in chunks and underlines are drawn incrementally, starting from the visible area. |
 | `ChunkSize` | Size of one chunk in bytes when `ChunkedCheck` is enabled. Default is `16384`. |
+| `CheckVisibleOnly` | When `True`, only the visible part of the RichMemo is checked and re-checked on scroll. Default is `False`. |
 
 Events:
 
