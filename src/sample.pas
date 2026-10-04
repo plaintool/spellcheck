@@ -5,7 +5,7 @@ unit sample;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, RichMemo,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, LCLType, RichMemo,
   SpellChecker;
 
 type
@@ -17,6 +17,7 @@ type
     RichMemo1: TRichMemo;
     SpellChecker1: TSpellChecker;
     procedure FormCreate(Sender: TObject);
+    procedure RichMemo1KeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
   private
 
   public
@@ -43,6 +44,40 @@ begin
   // Workaround for RichMemo/RichEdit scrollbar repaint artifacts on Windows.
   // Stores the parent handle and runs a timer to force repaints.
   RichMemo1.EnableScrollbarFix(Panel1);
+
+  {$IFDEF UNIX}
+  RichMemo1.EnableUndo;
+  {$ENDIF}
+end;
+
+procedure TForm1.RichMemo1KeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
+begin
+  // Handle ctrl shortcuts for rich memo editing
+  if ssCtrl in Shift then
+  begin
+    case Key of
+      VK_C: begin
+        // Ctrl+C, copy selected text to clipboard
+        RichMemo1.CopyToClipboardEx;
+        Key := 0;
+      end;
+      VK_V: begin
+        // Ctrl+V, paste text from clipboard
+        RichMemo1.PasteFromClipboardEx(False);
+        Key := 0;
+      end;
+      VK_Z: begin
+        // Ctrl+Z, undo last action
+        RichMemo1.UndoEx;
+        Key := 0;
+      end;
+      VK_Y: begin
+        // Ctrl+Y, redo last undone action
+        RichMemo1.RedoEx;
+        Key := 0;
+      end;
+    end;
+  end;
 end;
 
 end.
