@@ -40,6 +40,8 @@ Main properties:
 | `Engine` | Engine: `seWindows` or `seHunspell`. |
 | `DicPath` | Hunspell dictionaries directory; also a cache for downloads via `DicUrl`. |
 | `DicUrl` | URL template for automatic dictionary download. |
+| `ChunkedCheck` | When `True`, large texts are checked in chunks and underlines are drawn incrementally, starting from the visible area. |
+| `ChunkSize` | Size of one chunk in bytes when `ChunkedCheck` is enabled. Default is `16384`. |
 
 Events:
 

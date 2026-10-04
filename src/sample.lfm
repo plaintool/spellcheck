@@ -1,28 +1,41 @@
 object Form1: TForm1
   Left = 305
-  Height = 314
+  Height = 322
   Top = 250
-  Width = 477
+  Width = 486
   Caption = 'Form1'
-  ClientHeight = 314
-  ClientWidth = 477
+  ClientHeight = 322
+  ClientWidth = 486
   LCLVersion = '4.8.0.0'
-  object RichMemo1: TRichMemo
+  OnCreate = FormCreate
+  object Panel1: TPanel
     Left = 0
-    Height = 314
+    Height = 322
     Top = 0
-    Width = 477
+    Width = 486
     Align = alClient
-    HideSelection = False
-    Lines.Strings = (
-      'Spell chek is a helpfull tool, but it is not perfict. Many peple depend on it too much, and they forget that it can miss real mistkaes. For exmaple, it may not catch a word that is speled correctly but used in the rong place. Thre are many such erors that only a human can find. A riter who wants clear prose must read slowly and think about each sentense. This is why proofreading still maters, even in a world full of computors.'
-      ''
-      'Good speling is not just about looking smart. It helpes readres trust your ideas and follow your meening. When a text is full of mistkaes, peopel may stop reading or laugh at the rong thingz. A single typo can change the tone of a whole paragraf. For instence, "form" and "from" are very close, but they do differant jobs. A careful riter cheks names, dates, and dificult words twice. Dictionries and style guides can help, but they cannot replace atention. The best habbit is to raed aloud, becuase your ear often catches what your eyse skip.'
-      ''
-      'Some studants thnik that spell chek will saive them from evrey probblem. That is not tru. Softwear can sugest chages, but it does not undrestand contekst or ironny. It may corect a name into a comon word, or it may ignor a misssing leter. Teechers and editers still need to chek the finel draf with caer. If you wnt to imrpove, keeep a lsit of wrods you offen gett rong. Thne practis them in short sentenses untill they feal natrual. Ovver tiem, yuor writting becoms clener, stonger, and moar profesonal.'
-    )
+    BevelOuter = bvNone
+    ClientHeight = 322
+    ClientWidth = 486
     TabOrder = 0
-    ZoomFactor = 1
+    object RichMemo1: TRichMemo
+      Left = 0
+      Height = 322
+      Top = 0
+      Width = 486
+      Align = alClient
+      HideSelection = False
+      Lines.Strings = (
+        'Spell chek is a helpfull tool, but it is not perfict. Many peple depend on it too much, and they forget that it can miss real mistkaes. For exmaple, it may not catch a word that is speled correctly but used in the rong place. Thre are many such erors that only a human can find. A riter who wants clear prose must read slowly and think about each sentense. This is why proofreading still maters, even in a world full of computors.'
+        ''
+        'Good speling is not just about looking smart. It helpes readres trust your ideas and follow your meening. When a text is full of mistkaes, peopel may stop reading or laugh at the rong thingz. A single typo can change the tone of a whole paragraf. For instence, "form" and "from" are very close, but they do differant jobs. A careful riter cheks names, dates, and dificult words twice. Dictionries and style guides can help, but they cannot replace atention. The best habbit is to raed aloud, becuase your ear often catches what your eyse skip.'
+        ''
+        'Some studants thnik that spell chek will saive them from evrey probblem. That is not tru. Softwear can sugest chages, but it does not undrestand contekst or ironny. It may corect a name into a comon word, or it may ignor a misssing leter. Teechers and editers still need to chek the finel draf with caer. If you wnt to imrpove, keeep a lsit of wrods you offen gett rong. Thne practis them in short sentenses untill they feal natrual. Ovver tiem, yuor writting becoms clener, stonger, and moar profesonal.'
+      )
+      ScrollBars = ssVertical
+      TabOrder = 0
+      ZoomFactor = 1
+    end
   end
   object SpellChecker1: TSpellChecker
     RichMemo = RichMemo1
@@ -32,7 +45,9 @@ object Form1: TForm1
     Engine = seHunspell
     DicPath = '{temp}\dic'
     DicUrl = 'https://raw.githubusercontent.com/plainlib/dictionaries/main/{plaindict}'
-    Left = 392
-    Top = 240
+    ChunkedCheck = True
+    ChunkSize = 256
+    Left = 40
+    Top = 24
   end
 end
