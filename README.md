@@ -31,24 +31,30 @@ Main properties:
 | `Language` | BCP-47 language tag, e.g. `en-US`, `ru-RU`. |
 | `Enabled` | Enables or disables spell checking. |
 | `Options` | A set of `TSpellCheckOptions`. |
+| `AddEmptySuggestions` | Include errors that have no suggestions. Default is `True`. |
 | `RealTime` | Check text after changes. |
 | `CheckDelay` | Delay before checking after the last change. |
 | `AutoApply` | Automatically apply error underlines. |
 | `AutoContextMenu` | Automatically show the suggestion menu. |
 | `MemoChangeOnReplace` | When `True`, `RichMemo.OnChange` fires for replacements from the suggestion menu. Default is `False`. |
 | `PopupMenu` | External `TPopupMenu` for integrating suggestions. |
+| `SubMenu` | When `True`, suggestions are placed in a submenu. Default is `False`. |
+| `SubMenuCaption` | Caption of the submenu when `SubMenu` is `True`. Default is `Suggestions`. |
+| `SubMenuIndex` | Index where suggestions or the submenu are inserted in `PopupMenu`. Default is `0`. |
 | `Engine` | Engine: `seWindows` or `seHunspell`. |
 | `DicPath` | Hunspell dictionaries directory; also a cache for downloads via `DicUrl`. |
 | `DicUrl` | URL template for automatic dictionary download. |
 | `ChunkedCheck` | When `True`, large texts are checked in chunks and underlines are drawn incrementally, starting from the visible area. |
 | `ChunkSize` | Size of one chunk in bytes when `ChunkedCheck` is enabled. Default is `16384`. |
 | `CheckVisibleOnly` | When `True`, only the visible part of the RichMemo is checked and re-checked on scroll. Default is `False`. |
+| `TwoPhaseSuggestions` | When `True`, the check runs in two passes: first errors and underlines, then background suggestion generation. Hunspell engine only. Default is `False`. |
+| `WinSupportedLanguages` | Read-only list of BCP-47 tags supported by the current engine. Empty for the Hunspell engine. |
 
 Events:
 
 | Event | Purpose |
 |---|---|
-| `OnContextPopup` | Fired before the component’s built-in handling. Set `Handled := True` to suppress the automatic suggestion menu and show your own. |
+| `OnContextPopup` | Fired before the component's built-in handling. Set `Handled := True` to suppress the automatic suggestion menu and show your own. |
 | `OnReplace` | Fired right after a suggestion replaced a word. Useful because `RichMemo.OnChange` is suppressed during replacement. |
 | `OnSpellCheckComplete` | Fired after each check, including the automatic re-check that follows a replacement. |
 
@@ -175,14 +181,14 @@ spellcheck/
 ├─ .gitmodules             # Git submodule definitions for dependencies
 ├─ build.cmd               # Main project build script
 ├─ build32.cmd             # Wrapper that calls build.cmd with the 32-bit target
+├─ buildfast.cmd           # Quick project build: skips dependencies, signing, and binary processing
 ├─ CONTRIBUTING.md         # Contribution guidelines
 ├─ depadd.cmd              # Helper script to add a dependency
 ├─ dependencies.cmd        # Builds all project dependencies
 ├─ dependencies32.cmd      # Builds dependencies for 32-bit target
 ├─ dependency.cmd          # Universal single-dependency builder
 ├─ depsbinary.cmd          # Copies and signs binary files
-├─ depssub.cmd             # Pulls latest dependency submodule sources for x64 without building them
-├─ fast.cmd                # Quick project build: skips dependencies, signing, and binary processing
+├─ depspull.cmd            # Pulls latest dependency submodule sources for x64 without building them
 ├─ LICENSE                 # License file
 ├─ makefile                # Alternative make-based build
 ├─ spellcheck.ico          # Application icon
