@@ -45,7 +45,13 @@ begin
   // Stores the parent handle and runs a timer to force repaints.
   RichMemo1.EnableScrollbarFix(Panel1);
 
+  // Set a small left indent for the whole text: the resulting left margin
+  // makes it easier to select text line by line without hitting the border.
+  RichMemo1.SetLeftIndent(5);
+
   {$IFDEF UNIX}
+  // Attach the custom undo/redo tracker on Linux only, because on Windows
+  // the native RichEdit undo stack is used instead.
   RichMemo1.EnableUndo;
   {$ENDIF}
 end;
