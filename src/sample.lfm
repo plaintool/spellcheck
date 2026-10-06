@@ -47,8 +47,9 @@ object Form1: TForm1
     DicPath = '{temp}\dic'
     DicUrl = 'https://raw.githubusercontent.com/plainlib/dictionaries/main/{plaindict}'
     ChunkedCheck = True
-    ChunkSize = 2048
+    ChunkSize = 1024
     CheckVisibleOnly = True
+    TwoPhaseSuggestions = True
     Left = 40
     Top = 24
   end
