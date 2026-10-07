@@ -24,6 +24,7 @@ object Form1: TForm1
       Top = 0
       Width = 486
       Align = alClient
+      BorderStyle = bsNone
       HideSelection = False
       Lines.Strings = (
         'Spell chek is a helpfull tool, but it is not perfict. Many peple depend on it too much, and they forget that it can miss real mistkaes. For exmaple, it may not catch a word that is speled correctly but used in the rong place. Thre are many such erors that only a human can find. A riter who wants clear prose must read slowly and think about each sentense. This is why proofreading still maters, even in a world full of computors.'
