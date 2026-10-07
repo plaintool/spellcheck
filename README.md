@@ -221,12 +221,6 @@ Dependencies:
 
 They are included via `libs/` and `.gitmodules`.
 
-### Using Lazarus
-
-1. Open `spellcheck.lpi`.
-2. Select a build mode, e.g. `Release`.
-3. Click **Build**.
-
 ### Using Scripts
 
 All `.cmd` scripts in this repository are Windows-only.
@@ -260,8 +254,32 @@ The `.cmd` scripts are Windows-only. On Linux and macOS, use the provided `makef
 make
 ```
 
-This builds the project using the same Lazarus project file (`spellcheck.lpi`).
-If the dependencies are not built yet, you may need to build them first (each dependency has its own build system) or open `spellcheck.lpi` in Lazarus and build from the IDE.
+The makefile pulls the submodules and builds all dependencies
+(Helpers, Toolkit, RichMemo, RichKit, DesignKit) before building the project
+itself, so a clean checkout can be built with a single command.
+
+### Using Lazarus
+
+Before opening the project, make sure the dependency submodules in `libs/`
+are checked out:
+
+```bash
+git submodule update --init --recursive
+```
+
+If you open the project directly in the Lazarus IDE, the packages from the
+`libs/` folder are not built automatically. You need to install them first:
+
+1. Open the package file (`designkit.lpk`) in Lazarus and click
+   **Use → Install**, then rebuild the IDE. This pulls in the whole dependency
+   chain (Helpers, Toolkit, RichMemo, RichKit, DesignKit).
+2. Open `spellcheck.lpi`.
+3. Select a build mode, e.g. `Release`.
+4. Click **Build**.
+
+If you don't want to install packages into the IDE, use the Windows batch
+scripts `build` or `make` instead — they build everything through `lazbuild` without
+touching your IDE installation.
 
 ## License
 
