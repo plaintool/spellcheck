@@ -16,8 +16,7 @@ DEP_LPKS = \
     libs/toolkit/toolkit.lpk \
     libs/richmemo/richmemopackage.lpk \
     libs/richmemo/ide/richmemo_design.lpk \
-    libs/richkit/richkit.lpk \
-    libs/designkit/designkit.lpk
+    libs/richkit/richkit.lpk
 
 # Default target: get submodules, build dependencies then the project
 all: submodules deps

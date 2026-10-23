@@ -59,7 +59,7 @@
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="designkit"/>
+        <PackageName Value="LCL"/>
       </Item>
       <Item>
         <PackageName Value="richmemo_design"/>
@@ -68,13 +68,14 @@
         <PackageName Value="richmemopackage"/>
       </Item>
       <Item>
-        <PackageName Value="LCL"/>
+        <PackageName Value="richkit"/>
       </Item>
     </RequiredPackages>
     <Units>
       <Unit>
         <Filename Value="spellcheck.lpr"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="SpellCheck"/>
       </Unit>
       <Unit>
         <Filename Value="LICENSE"/>
@@ -86,6 +87,7 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Sample"/>
       </Unit>
     </Units>
   </ProjectOptions>

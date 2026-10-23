@@ -5,11 +5,11 @@
 [![Platform: Windows Linux](https://img.shields.io/badge/Platform-Windows_Linux-yellow)](#)
 [![Latest Release](https://img.shields.io/github/v/release/plaintool/spellcheck?label=Release)](https://github.com/plaintool/spellcheck/releases/latest)
 
-This repository contains a minimal Lazarus/FPC project that demonstrates how to add spell checking to a `TRichMemo` control using the non-visual `TSpellChecker` component from the [DesignKit](https://github.com/plainlib/designkit) package.
+This repository contains a minimal Lazarus/FPC project that demonstrates how to add spell checking to a `TRichMemo` control using the non-visual `TSpellChecker` component from the [RichKit](https://github.com/plainlib/richkit) package.
 
 ![spellchecker](samples/sample1.png)
 
-The project is not part of DesignKit — it is a simple integration example. The component supports two engines: the native Windows Spell Checker (`seWindows`) and the cross-platform Hunspell engine (`seHunspell`).
+The project is not part of RichKit — it is a simple integration example. The component supports two engines: the native Windows Spell Checker (`seWindows`) and the cross-platform Hunspell engine (`seHunspell`).
 
 ## What This Example Demonstrates
 
@@ -173,7 +173,7 @@ close approximation.
 
 ```text
 spellcheck/
-├─ libs/                   # Git submodules (Helpers, Toolkit, RichMemo, RichKit, DesignKit)
+├─ libs/                   # Git submodules (Helpers, Toolkit, RichMemo, RichKit)
 ├─ lib/                    # Compiled modules/libraries
 ├─ samples/                # Additional samples
 ├─ src/                    # Example source code
@@ -217,7 +217,6 @@ Dependencies:
 - [Helpers](https://github.com/plainlib/helpers)
 - [Toolkit](https://github.com/plainlib/toolkit)
 - [RichKit](https://github.com/plainlib/richkit)
-- [DesignKit](https://github.com/plainlib/designkit)
 
 They are included via `libs/` and `.gitmodules`.
 
@@ -244,7 +243,7 @@ Additional `build.cmd` options:
 - `--no-sign` — skip executable signing.
 - `--no-binary` — skip binary file processing.
 
-The `dependencies.cmd` script builds dependencies: Helpers, Toolkit, RichMemo, RichKit, DesignKit. The `dependency.cmd` script is a universal builder for a single dependency via `lazbuild`.
+The `dependencies.cmd` script builds dependencies: Helpers, Toolkit, RichMemo, RichKit. The `dependency.cmd` script is a universal builder for a single dependency via `lazbuild`.
 
 ### Building on Linux / macOS
 
@@ -255,7 +254,7 @@ make
 ```
 
 The makefile pulls the submodules and builds all dependencies
-(Helpers, Toolkit, RichMemo, RichKit, DesignKit) before building the project
+(Helpers, Toolkit, RichMemo, RichKit) before building the project
 itself, so a clean checkout can be built with a single command.
 
 ### Using Lazarus
@@ -270,9 +269,9 @@ git submodule update --init --recursive
 If you open the project directly in the Lazarus IDE, the packages from the
 `libs/` folder are not built automatically. You need to install them first:
 
-1. Open the package file (`designkit.lpk`) in Lazarus and click
+1. Open the package file (`richkit.lpk`) in Lazarus and click
    **Use → Install**, then rebuild the IDE. This pulls in the whole dependency
-   chain (Helpers, Toolkit, RichMemo, RichKit, DesignKit).
+   chain (Helpers, Toolkit, RichMemo, RichKit).
 2. Open `spellcheck.lpi`.
 3. Select a build mode, e.g. `Release`.
 4. Click **Build**.
