@@ -43,6 +43,8 @@ object Form1: TForm1
     RichMemo = RichMemo1
     Language = 'en'
     RealTime = True
+    AllowAddToDictionary = True
+    AddToDictionaryCaption = 'Add To Dictionary'
     SubMenuCaption = 'Suggestions'
     Engine = seHunspell
     DicPath = '{temp}\dic'
