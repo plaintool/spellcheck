@@ -220,42 +220,37 @@ Dependencies:
 
 They are included via `libs/` and `.gitmodules`.
 
-### Using Scripts
+## Building from Source
 
-All `.cmd` scripts in this repository are Windows-only.
+### Requirements
+- [Lazarus 4.8](https://www.lazarus-ide.org/)
+- [Git](https://git-scm.com/) (Windows only)
 
-```cmd
-build.cmd
-```
+### Build Instructions
 
-Builds the 64-bit version.
+**Windows**
 
-```cmd
-build32.cmd
-```
+1. Clone the repository:
+   ```cmd
+   git clone https://github.com/plaintool/spellcheck
+   ```
+2. Open the project directory and run:
+   ```bash
+   build.cmd
+   ```
 
-Equivalent to `build.cmd 32`. Builds the 32-bit version.
+**Linux**
 
-Additional `build.cmd` options:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/plaintool/spellcheck
+   ```
+2. Open the project directory and run:
+   ```bash
+   make
+   ```
 
-- `--no-deps` — skip dependency build.
-- `--no-build` — skip project build.
-- `--no-sign` — skip executable signing.
-- `--no-binary` — skip binary file processing.
-
-The `dependencies.cmd` script builds dependencies: Helpers, Toolkit, RichMemo, RichKit. The `dependency.cmd` script is a universal builder for a single dependency via `lazbuild`.
-
-### Building on Linux / macOS
-
-The `.cmd` scripts are Windows-only. On Linux and macOS, use the provided `makefile`:
-
-```bash
-make
-```
-
-The makefile pulls the submodules and builds all dependencies
-(Helpers, Toolkit, RichMemo, RichKit) before building the project
-itself, so a clean checkout can be built with a single command.
+The compiled executable will be available in the project directory.
 
 ### Using Lazarus
 
